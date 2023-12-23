@@ -1,9 +1,23 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import { Signup } from "../src/application/usecase/Signup";
+import LoggerConsole from "../src/infra/logger/LoggerConsole";
+import { UserRepositoryDatabase } from "../src/infra/repository/UserRepositoryDatabase";
+import GetUser from "../src/application/usecase/GetUser";
 
 const prisma = new PrismaClient();
 
 beforeAll(async () => {
   await prisma.user.deleteMany({});
+});
+
+let signup: Signup;
+let getUser: GetUser;
+
+beforeEach(() => {
+  const userDAO = new UserRepositoryDatabase(prisma);
+  const logger = new LoggerConsole();
+  signup = new Signup(userDAO, logger);
+  getUser = new GetUser(userDAO);
 });
 
 test("should create a user", async () => {
@@ -16,9 +30,23 @@ test("should create a user", async () => {
     password: "12345678",
   };
 
-  const user = await prisma.user.create({
-    data: inputSignup,
-  });
+  const outputSignup = await signup.execute(inputSignup);
+  expect(outputSignup.id).toBeDefined();
 
-  expect(user.email).toBe(inputSignup.email);
+  const outputGetAccount = await getUser.execute(outputSignup.id);
+  expect(outputGetAccount?.email).toBe(inputSignup.email);
+});
+
+test("Should not create a new account with an existing email", async () => {
+  const inputSignup = {
+    name: "John Doe",
+    email: `john.doe${Math.random()}@email.com`,
+    cpf: "97456321551",
+    password: "12345678",
+  };
+
+  await signup.execute(inputSignup);
+  await expect(() => signup.execute(inputSignup)).rejects.toThrow(
+    new Error("Existing account")
+  );
 });
