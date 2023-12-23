@@ -3,19 +3,16 @@ import { Logger } from "../logger/Logger";
 import { UserRepository } from "../repository/UserRepository";
 
 export class Signup {
-  constructor(
-    private userRepository: UserRepository,
-    private logger: Logger
-  ) {}
+  constructor(private userRepository: UserRepository, private logger: Logger) {}
 
   async execute(input: Input): Promise<Output> {
-    this.logger.log(`Signup: ${input.name}`);
+    this.logger.log(`Signup: ${input.name} ${input.email} ${input.cpf}`);
 
-    const existingUser = await this.userRepository.getByEmail(
-      input.email
-    );
+    const existingEmail = await this.userRepository.getByEmail(input.email);
 
-    if (existingUser) {
+    const existingCpf = await this.userRepository.getByCpf(input.cpf);
+
+    if (existingEmail || existingCpf) {
       throw new Error("Existing user");
     }
 
@@ -27,7 +24,7 @@ export class Signup {
   }
 }
 
-export type Input = Prisma.UserCreateInput
+export type Input = Prisma.UserCreateInput;
 
 export type Output = {
   id: string;

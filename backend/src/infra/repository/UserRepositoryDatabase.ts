@@ -23,4 +23,12 @@ export class UserRepositoryDatabase implements UserRepository {
       },
     });
   }
+
+  async getByCpf(cpf: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: {
+        cpf,
+      },
+    });
+  }
 }

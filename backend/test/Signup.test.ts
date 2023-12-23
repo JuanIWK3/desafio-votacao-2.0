@@ -50,3 +50,17 @@ test("Should not create a new user with an existing email", async () => {
     new Error("Existing user")
   );
 });
+
+test("Should not create a new user with an existing cpf", async () => {
+  const inputSignup = {
+    name: "John Doe",
+    email: `john.doe${Math.random()}@email.com`,
+    cpf: "97456321552",
+    password: "12345678",
+  };
+
+  await signup.execute(inputSignup);
+  await expect(() => signup.execute(inputSignup)).rejects.toThrow(
+    new Error("Existing user")
+  );
+})
