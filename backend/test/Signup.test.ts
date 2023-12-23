@@ -4,29 +4,24 @@ import LoggerConsole from "../src/infra/logger/LoggerConsole";
 import { UserRepositoryDatabase } from "../src/infra/repository/UserRepositoryDatabase";
 import GetUser from "../src/application/usecase/GetUser";
 
-const prisma = new PrismaClient();
-
-beforeAll(async () => {
-  await prisma.user.deleteMany({});
-});
-
 let signup: Signup;
 let getUser: GetUser;
 
-beforeEach(() => {
+beforeEach(async () => {
+  const prisma = new PrismaClient();
   const userDAO = new UserRepositoryDatabase(prisma);
   const logger = new LoggerConsole();
   signup = new Signup(userDAO, logger);
   getUser = new GetUser(userDAO);
+
+  await prisma.user.deleteMany();
 });
 
 test("should create a user", async () => {
-  console.log(await prisma.user.findMany());
-
   const inputSignup: Prisma.UserCreateInput = {
     name: "John Doe",
     email: `john.doe${Math.random()}@email.com`,
-    cpf: "97456321558",
+    cpf: "97456321553",
     password: "12345678",
   };
 
@@ -63,4 +58,5 @@ test("Should not create a new user with an existing cpf", async () => {
   await expect(() => signup.execute(inputSignup)).rejects.toThrow(
     new Error("Existing user")
   );
-})
+});
+

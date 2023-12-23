@@ -5,7 +5,7 @@ import { UserRepository } from "../repository/UserRepository";
 export class Signup {
   constructor(private userRepository: UserRepository, private logger: Logger) {}
 
-  async execute(input: Input): Promise<Output> {
+  async execute(input: Input) {
     this.logger.log(`Signup: ${input.name} ${input.email} ${input.cpf}`);
 
     const existingEmail = await this.userRepository.getByEmail(input.email);
@@ -18,14 +18,8 @@ export class Signup {
 
     const user = await this.userRepository.save(input);
 
-    return {
-      id: user.id,
-    };
+    return user;
   }
 }
 
 export type Input = Prisma.UserCreateInput;
-
-export type Output = {
-  id: string;
-};
