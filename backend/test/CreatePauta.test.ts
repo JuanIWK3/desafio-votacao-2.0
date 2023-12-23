@@ -39,6 +39,4 @@ test.only("Should create a Pauta", async () => {
   });
 
   expect(createPautaOutput.id).toBeDefined();
-
-  console.log(createPautaOutput);
 });
