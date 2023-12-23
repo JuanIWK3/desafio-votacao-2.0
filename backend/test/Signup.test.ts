@@ -33,11 +33,11 @@ test("should create a user", async () => {
   const outputSignup = await signup.execute(inputSignup);
   expect(outputSignup.id).toBeDefined();
 
-  const outputGetAccount = await getUser.execute(outputSignup.id);
-  expect(outputGetAccount?.email).toBe(inputSignup.email);
+  const outputGetUser = await getUser.execute(outputSignup.id);
+  expect(outputGetUser?.email).toBe(inputSignup.email);
 });
 
-test("Should not create a new account with an existing email", async () => {
+test("Should not create a new user with an existing email", async () => {
   const inputSignup = {
     name: "John Doe",
     email: `john.doe${Math.random()}@email.com`,
@@ -47,6 +47,6 @@ test("Should not create a new account with an existing email", async () => {
 
   await signup.execute(inputSignup);
   await expect(() => signup.execute(inputSignup)).rejects.toThrow(
-    new Error("Existing account")
+    new Error("Existing user")
   );
 });

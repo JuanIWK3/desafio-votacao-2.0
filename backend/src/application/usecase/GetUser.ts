@@ -5,8 +5,8 @@ export default class GetUser {
 	constructor (private userRepository: UserRepository) {
 	}
 	
-	async execute (accountId: string) {
-		const user = await this.userRepository.getById(accountId);
+	async execute (userId: string) {
+		const user = await this.userRepository.getById(userId);
 		return user;
 	}
 }

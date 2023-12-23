@@ -4,8 +4,8 @@ import { UserRepository } from "../../application/repository/UserRepository";
 export class UserRepositoryDatabase implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async save(account: Prisma.UserCreateInput) {
-    return await this.prisma.user.create({ data: account });
+  async save(user: Prisma.UserCreateInput) {
+    return await this.prisma.user.create({ data: user });
   }
 
   async getById(id: string): Promise<User | null> {

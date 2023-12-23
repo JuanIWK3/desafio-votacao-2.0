@@ -4,25 +4,25 @@ import { UserRepository } from "../repository/UserRepository";
 
 export class Signup {
   constructor(
-    private accountRepository: UserRepository,
+    private userRepository: UserRepository,
     private logger: Logger
   ) {}
 
   async execute(input: Input): Promise<Output> {
     this.logger.log(`Signup: ${input.name}`);
 
-    const existingAccount = await this.accountRepository.getByEmail(
+    const existingUser = await this.userRepository.getByEmail(
       input.email
     );
 
-    if (existingAccount) {
-      throw new Error("Existing account");
+    if (existingUser) {
+      throw new Error("Existing user");
     }
 
-    const account = await this.accountRepository.save(input);
+    const user = await this.userRepository.save(input);
 
     return {
-      id: account.id,
+      id: user.id,
     };
   }
 }
