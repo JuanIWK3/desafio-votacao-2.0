@@ -8,6 +8,15 @@ export class UserRepositoryDatabase implements UserRepository {
     return await this.prisma.user.create({ data: user });
   }
 
+  async signin(email: string, password: string): Promise<any> {
+    return await this.prisma.user.findFirst({
+      where: {
+        email,
+        password,
+      },
+    });
+  }
+
   async getById(id: string): Promise<User | null> {
     return await this.prisma.user.findUnique({
       where: {

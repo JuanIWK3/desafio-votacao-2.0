@@ -2,7 +2,6 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { CreatePauta } from "../src/application/usecase/CreatePauta";
 import { GetPauta } from "../src/application/usecase/GetPauta";
 import { Signup } from "../src/application/usecase/Signup";
-import LoggerConsole from "../src/infra/logger/LoggerConsole";
 import { PautaRepositoryDatabase } from "../src/infra/repository/PautaRepositoryDatabase";
 import { UserRepositoryDatabase } from "../src/infra/repository/UserRepositoryDatabase";
 import { GetPautas } from "../src/application/usecase/GetPautas";
@@ -19,8 +18,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   const userDAO = new UserRepositoryDatabase(prisma);
   const pautaDAO = new PautaRepositoryDatabase(prisma);
-  const logger = new LoggerConsole();
-  signup = new Signup(userDAO, logger);
+  signup = new Signup(userDAO);
   createPauta = new CreatePauta(pautaDAO);
   getPautas = new GetPautas(pautaDAO);
 

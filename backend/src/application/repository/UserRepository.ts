@@ -3,4 +3,5 @@ export interface UserRepository {
   getById(anyId: string): Promise<any | null>;
   getByEmail(email: string): Promise<any | null>;
   getByCpf(cpf: string): Promise<any | null>;
+  signin(email: string, password: string): Promise<any>;
 }

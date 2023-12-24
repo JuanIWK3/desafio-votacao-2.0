@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "dev": "ts-node-dev --respawn ./src/main.ts",
-    "test": "jest --detectOpenHandles --coverage"
+    "test": "jest --detectOpenHandles --coverage",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",

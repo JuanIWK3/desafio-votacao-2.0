@@ -1,6 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Signup } from "../src/application/usecase/Signup";
-import LoggerConsole from "../src/infra/logger/LoggerConsole";
 import { UserRepositoryDatabase } from "../src/infra/repository/UserRepositoryDatabase";
 import GetUser from "../src/application/usecase/GetUser";
 
@@ -14,8 +13,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   const userDAO = new UserRepositoryDatabase(prisma);
-  const logger = new LoggerConsole();
-  signup = new Signup(userDAO, logger);
+  signup = new Signup(userDAO);
   getUser = new GetUser(userDAO);
 
   await prisma.$executeRaw`TRUNCATE "User" CASCADE;`;
@@ -45,9 +43,7 @@ test("Should not create a new user with an existing email", async () => {
   };
 
   await signup.execute(inputSignup);
-  await expect(() => signup.execute(inputSignup)).rejects.toThrow(
-    new Error("Existing user")
-  );
+  expect(async () => await signup.execute(inputSignup)).toThrow(Error("Existing user"));
 });
 
 test("Should not create a new user with an existing cpf", async () => {
@@ -59,7 +55,12 @@ test("Should not create a new user with an existing cpf", async () => {
   };
 
   await signup.execute(inputSignup);
-  await expect(() => signup.execute(inputSignup)).rejects.toThrow(
+
+  expect(async () => signup.execute(inputSignup)).toThrow(
     new Error("Existing user")
   );
 });
+
+afterAll(async () => {
+  await prisma.user.deleteMany({});
+})
