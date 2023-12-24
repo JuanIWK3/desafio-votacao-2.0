@@ -1,15 +1,17 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { CreatePauta } from "../src/application/usecase/CreatePauta";
 import { GetPauta } from "../src/application/usecase/GetPauta";
 import { Signup } from "../src/application/usecase/Signup";
 import LoggerConsole from "../src/infra/logger/LoggerConsole";
 import { PautaRepositoryDatabase } from "../src/infra/repository/PautaRepositoryDatabase";
 import { UserRepositoryDatabase } from "../src/infra/repository/UserRepositoryDatabase";
-import { GetPautas } from "../src/application/usecase/GetPautas";
+import { VotePauta } from "../src/application/usecase/VotePauta";
 
 let signup: Signup;
 let createPauta: CreatePauta;
-let getPautas: GetPautas;
+let getPauta: GetPauta;
+let votePauta: VotePauta;
+let logger: LoggerConsole;
 let prisma: PrismaClient;
 
 beforeAll(async () => {
@@ -19,35 +21,41 @@ beforeAll(async () => {
 beforeEach(async () => {
   const userDAO = new UserRepositoryDatabase(prisma);
   const pautaDAO = new PautaRepositoryDatabase(prisma);
-  const logger = new LoggerConsole();
+
+  logger = new LoggerConsole();
   signup = new Signup(userDAO, logger);
   createPauta = new CreatePauta(pautaDAO);
-  getPautas = new GetPautas(pautaDAO);
+  getPauta = new GetPauta(pautaDAO);
+  votePauta = new VotePauta(pautaDAO);
 
   await prisma.pauta.deleteMany();
+  await prisma.vote.deleteMany();
   await prisma.user.deleteMany();
 });
 
-test("Should create a Pauta", async () => {
-  const inputSignup: Prisma.UserCreateInput = {
+test("Should vote a Pauta", async () => {
+  const user = await signup.execute({
     name: "John Doe",
     email: `john.doe${Math.random()}@email.com`,
-    cpf: "17456321554",
+    cpf: "97456321551",
     password: "12345678",
-  };
-
-  const outputSignup = await signup.execute(inputSignup);
-  expect(outputSignup.id).toBeDefined();
-
-  const createPautaOutput = await createPauta.execute({
-    title: "Pauta 1",
-    description: "Description 1",
-    createdById: outputSignup.id,
   });
 
-  expect(createPautaOutput.id).toBeDefined();
+  const pauta = await createPauta.execute({
+    title: "Pauta 1",
+    description: "Description 1",
+    createdById: user.id,
+  });
 
-  const getPautasOutput = await getPautas.execute();
+  logger.log(`${pauta.id}, ${user.id}`);
 
-  expect(getPautasOutput.length).toBe(1);
-});
+  await votePauta.execute({
+    pautaId: pauta.id,
+    userId: user.id,
+    vote: true,
+  });
+
+  const pautaVoted = await getPauta.execute(pauta.id);
+
+  expect(pautaVoted?.votes.length).toBe(1);
+}, 10000);

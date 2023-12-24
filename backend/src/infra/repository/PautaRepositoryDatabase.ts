@@ -17,6 +17,35 @@ export class PautaRepositoryDatabase implements PautaRepository {
       },
     });
   }
+
+  async getById(id: string) {
+    return await this.prisma.pauta.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        votes: true,
+      },
+    });
+  }
+
+  async getAll(): Promise<Pauta[]> {
+    return await this.prisma.pauta.findMany({
+      include: {
+        votes: true,
+      },
+    });
+  }
+
+  async vote(pautaId: string, vote: boolean, userId: string): Promise<void> {
+    await this.prisma.vote.create({
+      data: {
+        pautaId: pautaId,
+        vote,
+        userId,
+      },
+    });
+  }
 }
 
 export type SavePautaInput = Omit<Pauta, "createdAt" | "updatedAt" | "id">;

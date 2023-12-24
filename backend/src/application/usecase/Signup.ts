@@ -6,7 +6,7 @@ export class Signup {
   constructor(private userRepository: UserRepository, private logger: Logger) {}
 
   async execute(input: Input) {
-    this.logger.log(`Signup: ${input.name} ${input.email} ${input.cpf}`);
+    // this.logger.log(`Signup: ${input.name} ${input.email} ${input.cpf}`);
 
     const existingEmail = await this.userRepository.getByEmail(input.email);
 

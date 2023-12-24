@@ -6,15 +6,19 @@ import GetUser from "../src/application/usecase/GetUser";
 
 let signup: Signup;
 let getUser: GetUser;
+let prisma: PrismaClient;
+
+beforeAll(async () => {
+  prisma = new PrismaClient();
+});
 
 beforeEach(async () => {
-  const prisma = new PrismaClient();
   const userDAO = new UserRepositoryDatabase(prisma);
   const logger = new LoggerConsole();
   signup = new Signup(userDAO, logger);
   getUser = new GetUser(userDAO);
 
-  await prisma.user.deleteMany();
+  await prisma.$executeRaw`TRUNCATE "User" CASCADE;`;
 });
 
 test("should create a user", async () => {
@@ -59,4 +63,3 @@ test("Should not create a new user with an existing cpf", async () => {
     new Error("Existing user")
   );
 });
-
