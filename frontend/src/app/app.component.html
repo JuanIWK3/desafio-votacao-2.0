@@ -1,16 +1,27 @@
 <div class="flex justify-center items-center min-h-screen">
-  <form onsubmit="login" class="flex flex-col">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col gap-2"
+  >
     <input
       class="border border-gray-400 rounded px-4 py-2"
-      type="email"
+      type="text"
       placeholder="email"
+      formControlName="email"
     />
     <input
       class="border border-gray-400 rounded px-4 py-2"
       type="password"
       placeholder="password"
+      formControlName="password"
     />
-    <button class="border border-gray-400 rounded px-4 py-2">submit</button>
+    <button
+      type="submit"
+      class="border bg-stone-800 text-white font-bold border-gray-400 rounded px-4 py-2"
+    >
+      Login
+    </button>
   </form>
 </div>
 
