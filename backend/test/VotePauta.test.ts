@@ -33,7 +33,6 @@ beforeEach(async () => {
 test("Should vote a Pauta", async () => {
   const user = await signup.execute({
     name: "John Doe",
-    email: `john.doe${Math.random()}@email.com`,
     cpf: "97456321551",
     password: "12345678",
   });

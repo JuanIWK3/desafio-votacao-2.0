@@ -29,7 +29,6 @@ beforeEach(async () => {
 test("Should create a Pauta", async () => {
   const inputSignup: Prisma.UserCreateInput = {
     name: "John Doe",
-    email: `john.doe${Math.random()}@email.com`,
     cpf: "17456321554",
     password: "12345678",
   };

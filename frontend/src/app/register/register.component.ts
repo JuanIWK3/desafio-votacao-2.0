@@ -12,7 +12,7 @@ export class RegisterComponent {
   formBuilder = inject(FormBuilder);
 
   registerForm = this.formBuilder.group({
-    email: '',
+    cpf: '',
     password: '',
   });
 

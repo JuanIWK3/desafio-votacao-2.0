@@ -5,11 +5,9 @@ export class Signup {
   constructor(private userRepository: UserRepository) {}
 
   async execute(input: Input) {
-    const existingEmail = await this.userRepository.getByEmail(input.email);
-
     const existingCpf = await this.userRepository.getByCpf(input.cpf);
 
-    if (existingEmail || existingCpf) {
+    if (existingCpf) {
       throw new Error("Existing user");
     }
 

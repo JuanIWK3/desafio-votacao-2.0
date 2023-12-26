@@ -22,7 +22,6 @@ beforeEach(async () => {
 test("Should sign in a user", () => {
   const inputSignup: Prisma.UserCreateInput = {
     name: "John Doe",
-    email: `john.doe${Math.random()}@email.com`,
     cpf: "97456321553",
     password: "12345678",
   };
@@ -30,7 +29,7 @@ test("Should sign in a user", () => {
   signup.execute(inputSignup);
 
   const inputSignin = {
-    email: inputSignup.email,
+    cpf: inputSignup.cpf,
     password: inputSignup.password,
   };
 

@@ -14,14 +14,13 @@ export class LoginComponent {
   http = inject(HttpClient);
 
   loginForm = this.formBuilder.nonNullable.group({
-    email: '',
+    cpf: '',
     password: '',
   });
 
   onSubmit(): void {
     console.warn(this.loginForm.value);
 
-    // john.doe0.7014463386350545@email.com
     // 12345678
 
     this.http
