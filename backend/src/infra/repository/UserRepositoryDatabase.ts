@@ -8,6 +8,10 @@ export class UserRepositoryDatabase implements UserRepository {
     return await this.prisma.user.create({ data: user });
   }
 
+  async getAll(): Promise<User[]> {
+    return await this.prisma.user.findMany();
+  }
+
   async signin(email: string, password: string): Promise<any> {
     return await this.prisma.user.findFirst({
       where: {

@@ -1,24 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    HttpClientModule,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  loginForm = this.formBuilder.group({
-    email: '',
-    password: '',
-  });
+export class AppComponent implements OnInit {
+  title = 'frontend';
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor() {}
 
-  onSubmit(): void {
-    console.warn('Your order has been submitted', this.loginForm.value);
+  ngOnInit() {}
+
+  logout() {
+    console.log('logout');
+    localStorage.removeItem('user');
   }
 }

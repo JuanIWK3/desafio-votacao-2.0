@@ -8,7 +8,6 @@ export class PautaRepositoryDatabase implements PautaRepository {
     return await this.prisma.pauta.create({
       data: {
         title: pauta.title,
-        description: pauta.description,
         createdBy: {
           connect: {
             id: pauta.createdById,

@@ -1,28 +1,28 @@
-<div class="flex justify-center items-center min-h-screen">
-  <form
-    [formGroup]="loginForm"
-    (ngSubmit)="onSubmit()"
-    class="flex flex-col gap-2"
+<div class="flex justify-center items-center gap-4 p-4">
+  <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+    ><button class="border px-4 py-2 rounded">Login</button></a
   >
-    <input
-      class="border border-gray-400 rounded px-4 py-2"
-      type="text"
-      placeholder="email"
-      formControlName="email"
-    />
-    <input
-      class="border border-gray-400 rounded px-4 py-2"
-      type="password"
-      placeholder="password"
-      formControlName="password"
-    />
-    <button
-      type="submit"
-      class="border bg-stone-800 text-white font-bold border-gray-400 rounded px-4 py-2"
-    >
-      Login
-    </button>
-  </form>
+  <a
+    routerLink="/register"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+    ><button class="border px-4 py-2 rounded">Register</button></a
+  >
+  <a routerLink="/pautas" routerLinkActive="active" ariaCurrentWhenActive="page"
+    ><button class="border px-4 py-2 rounded">Pautas</button></a
+  >
+  <a routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page"
+    ><button class="border px-4 py-2 rounded">Users</button></a
+  >
+
+  <button (click)="logout()" class="px-4 py-2 rounded underline">logout</button>
 </div>
 
 <router-outlet></router-outlet>
+
+<style>
+  .active button {
+    background-color: #e2e8f0;
+    box-shadow: 0 0 0 2px #4a5568;
+  }
+</style>

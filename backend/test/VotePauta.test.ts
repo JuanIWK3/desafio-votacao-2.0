@@ -40,7 +40,6 @@ test("Should vote a Pauta", async () => {
 
   const pauta = await createPauta.execute({
     title: "Pauta 1",
-    description: "Description 1",
     createdById: user.id,
   });
 

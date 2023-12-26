@@ -39,7 +39,6 @@ test("Should create a Pauta", async () => {
 
   const createPautaOutput = await createPauta.execute({
     title: "Pauta 1",
-    description: "Description 1",
     createdById: outputSignup.id,
   });
 

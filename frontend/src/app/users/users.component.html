@@ -1,0 +1,14 @@
+@for (user of users; track $index) {
+<ul>
+  <li>
+    id: {{ user.id }}
+    <button (click)="copyToClipboard(user.id)" class="border px-2 py-1 rounded">
+      copy
+    </button>
+  </li>
+  <li>name: {{ user.name }}</li>
+  <li>email: {{ user.email }}</li>
+  <li>cpf: {{ user.cpf }}</li>
+  <li>password: {{ user.password }}</li>
+</ul>
+}

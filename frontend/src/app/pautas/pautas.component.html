@@ -1,0 +1,71 @@
+<div class="p-16">
+  <p class="mb-4">You are logged as {{ user.name }}</p>
+  <form
+    class="flex flex-col gap-2"
+    [formGroup]="createPautaForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <input
+      formControlName="title"
+      placeholder="title"
+      class="border rounded px-4 py-2"
+      type="text"
+    />
+
+    <button
+      class="border rounded px-4 py-2 bg-stone-800 text-white"
+      type="submit"
+    >
+      Create Pauta
+    </button>
+  </form>
+  <div class="flex flex-col gap-4">
+    @for (pauta of pautas; track $index) {
+    <ul class="flex flex-col border p-4 gap-2">
+      <h3 class="text-xl">{{ pauta.title }}</h3>
+
+      @if (userVoted(pauta)) {
+      <!-- Voted -->
+      <div class="flex flex-col gap-1">
+        <div class="flex relative px-2 py-1">
+          <div
+            class="bg-blue-300 w-1/2 rounded absolute left-0 top-0 h-full"
+          ></div>
+          <div class="flex justify-between z-10 w-full">
+            <p>Yes</p>
+            <p>{{ getVotes(pauta).yes / pauta.votes.length }}</p>
+          </div>
+        </div>
+        <div class="flex relative px-2 py-1">
+          <div
+            class="bg-blue-300 w-1/2 rounded absolute left-0 top-0 h-full"
+          ></div>
+          <div class="flex justify-between z-10 w-full">
+            <p>No</p>
+            <p>{{ getVotes(pauta).no / pauta.votes.length }}</p>
+          </div>
+        </div>
+      </div>
+      } @else {
+      <!-- Unvoted -->
+      <div class="flex flex-col gap-1">
+        <button
+          (click)="vote(pauta, true)"
+          class="border border-blue-400 text-blue-400 font-bold rounded"
+        >
+          Yes
+        </button>
+        <button
+          (click)="vote(pauta, false)"
+          class="border border-blue-400 text-blue-400 font-bold rounded"
+        >
+          No
+        </button>
+      </div>
+      }
+    </ul>
+    } @empty {
+    <li>Nenhuma pauta cadastrada</li>
+    }
+  </div>
+</div>

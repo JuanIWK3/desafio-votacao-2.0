@@ -20,10 +20,9 @@ model User {
 }
 
 model Pauta {
-  id          String @id @default(uuid())
-  title       String
-  description String
-  votes       Vote[]
+  id    String @id @default(uuid())
+  title String
+  votes Vote[]
 
   createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
   createdById String

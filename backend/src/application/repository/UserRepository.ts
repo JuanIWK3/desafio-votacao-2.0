@@ -1,7 +1,10 @@
+import { Prisma, User } from "@prisma/client";
+
 export interface UserRepository {
-  save(user: any): Promise<any>;
-  getById(anyId: string): Promise<any | null>;
-  getByEmail(email: string): Promise<any | null>;
-  getByCpf(cpf: string): Promise<any | null>;
-  signin(email: string, password: string): Promise<any>;
+  save(user: Prisma.UserCreateInput): Promise<User>;
+  getAll(): Promise<User[]>;
+  getById(userId: string): Promise<User | null>;
+  getByEmail(email: string): Promise<User | null>;
+  getByCpf(cpf: string): Promise<User | null>;
+  signin(email: string, password: string): Promise<User>;
 }
